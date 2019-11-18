@@ -7,15 +7,15 @@ from keras.models import model_from_json
 
 
 def get_emotions(filename):
-    label = ['angry', 'disgust', 'fear', 'happy', 'neutral', 'surprise', 'sad']
+    labels = ['angry', 'disgust', 'fear', 'happy', 'neutral', 'surprise', 'sad']
     # loading json and creating model
-    json_file = open('model.json', 'r')
+    json_file = open('model/model.json', 'r')
     loaded_model_json = json_file.read()
     json_file.close()
     loaded_model = model_from_json(loaded_model_json)
 
     # load weights into new model
-    loaded_model.load_weights("model/model.h5")
+    loaded_model.load_weights("model/best_model.h5")
     print("Loaded model from disk")
 
     print(filename)
@@ -44,7 +44,7 @@ def get_emotions(filename):
     test = np.expand_dims(test, axis=2)
 
     lb = LabelEncoder()
-    test_valid_lb = np.array(label)
+    test_valid_lb = np.array(labels)
     lb.fit_transform(test_valid_lb)
 
     preds = loaded_model.predict(test, batch_size=16, verbose=1)
@@ -52,12 +52,15 @@ def get_emotions(filename):
     for pred in preds[0]:
         total += pred
     preds1 = preds.argmax(axis=1)[0]
+    percentages = []
     for i in range(7):
         i = np.array(i)
         i = i.astype(int).flatten()
         print(lb.inverse_transform(i)[0], ": %.2f%%" % (preds[0][i]/total * 100))
+        percentages.append(preds[0][i][0]/total * 100)
     abc = preds1.astype(int).flatten()
     predictions = (lb.inverse_transform(abc))
     print()
     print('Detected:', predictions[0])
+    return percentages, predictions[0]
 

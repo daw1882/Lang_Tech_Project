@@ -416,7 +416,7 @@ opt = keras.optimizers.SGD(lr=0.0001, momentum=0.0, decay=0.0, nesterov=False)
 # # Model Training
 # lr_reduce = ReduceLROnPlateau(monitor='val_loss', factor=0.9, patience=20, min_lr=0.000001)
 # # Please change the model name accordingly.
-# mcp_save = ModelCheckpoint('model/model.h5', save_best_only=True, monitor='val_loss', mode='min')
+# mcp_save = ModelCheckpoint('model/best_model.h5', save_best_only=True, monitor='val_loss', mode='min')
 # cnnhistory = model.fit(x_traincnn, y_train, batch_size=16, epochs=700,
 #                        validation_data=(x_testcnn, y_test),
 #                        callbacks=[mcp_save, lr_reduce])
@@ -439,13 +439,13 @@ opt = keras.optimizers.SGD(lr=0.0001, momentum=0.0, decay=0.0, nesterov=False)
 # loading json and creating model
 from keras.models import model_from_json
 
-json_file = open('model.json', 'r')
+json_file = open('model/model.json', 'r')
 loaded_model_json = json_file.read()
 json_file.close()
 loaded_model = model_from_json(loaded_model_json)
 
 # load weights into new model
-loaded_model.load_weights("model/model.h5")
+loaded_model.load_weights("model/best_model.h5")
 print("Loaded model from disk")
 
 # evaluate loaded model on test data
