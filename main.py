@@ -88,7 +88,7 @@ def start_menu(window):
                 break
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_1:
-                    # record_and_save()
+                    record_and_save(window)
                     FILENAME = 'output.wav'
                     menu = False
                 if event.key == pygame.K_2:
@@ -103,6 +103,10 @@ def get_input_file(window):
     input_box1 = InputBox(25, display_height//2, 750, 40)
     done = False
 
+    text = text_format('Enter in file name:', 'comicsansms', 40, (0, 0, 0))
+    text_rect = text.get_rect()
+    text_rect.center = (200, display_height//2 - 50)
+
     while not done:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -111,6 +115,7 @@ def get_input_file(window):
             input_box1.update()
 
         window.fill((255, 255, 255))
+        window.blit(text, text_rect)
         input_box1.draw(window)
         if FILENAME != '':
             done = True
