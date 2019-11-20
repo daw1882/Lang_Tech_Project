@@ -59,54 +59,54 @@ print(dir_list2)
 
 data_df = pd.DataFrame(columns=['path', 'age', 'emotion'])
 count = 0
-# for i in dir_list:
-#     file_list = os.listdir('training_set/' + i)
-#     for f in file_list:
-#         nm = f.split('.')[0].split('_')
-#         path = 'training_set/' + i + '/' + f
-#         age = i.split('_')[0]
-#         if nm[2] == 'angry':
-#             emotion = 0
-#         elif nm[2] == 'disgust':
-#             emotion = 1
-#         elif nm[2] == 'fear':
-#             emotion = 2
-#         elif nm[2] == 'happy':
-#             emotion = 3
-#         elif nm[2] == 'neutral':
-#             emotion = 4
-#         elif nm[2] == 'ps':
-#             emotion = 5
-#         elif nm[2] == 'sad':
-#             emotion = 6
-#         else:
-#             emotion = -1
-#         data_df.loc[count] = [path, age, emotion]
-#         count += 1
-for i in dir_list2:
-    file_list = os.listdir('training_set2/' + i)
+for i in dir_list:
+    file_list = os.listdir('training_set/' + i)
     for f in file_list:
-        nm = f.split('.')[0].split('-')
-        path = 'training_set2/' + i + '/' + f
-        age = 'unknown'
-        if nm[2] == '05':
+        nm = f.split('.')[0].split('_')
+        path = 'training_set/' + i + '/' + f
+        age = i.split('_')[0]
+        if nm[2] == 'angry':
             emotion = 0
-        elif nm[2] == '07':
+        elif nm[2] == 'disgust':
             emotion = 1
-        elif nm[2] == '06':
+        elif nm[2] == 'fear':
             emotion = 2
-        elif nm[2] == '03':
+        elif nm[2] == 'happy':
             emotion = 3
-        elif nm[2] == '01' or nm[2] == '02':
+        elif nm[2] == 'neutral':
             emotion = 4
-        elif nm[2] == '08':
+        elif nm[2] == 'ps':
             emotion = 5
-        elif nm[2] == '04':
+        elif nm[2] == 'sad':
             emotion = 6
         else:
             emotion = -1
         data_df.loc[count] = [path, age, emotion]
         count += 1
+# for i in dir_list2:
+#     file_list = os.listdir('training_set2/' + i)
+#     for f in file_list:
+#         nm = f.split('.')[0].split('-')
+#         path = 'training_set2/' + i + '/' + f
+#         age = 'unknown'
+#         if nm[2] == '05':
+#             emotion = 0
+#         elif nm[2] == '07':
+#             emotion = 1
+#         elif nm[2] == '06':
+#             emotion = 2
+#         elif nm[2] == '03':
+#             emotion = 3
+#         elif nm[2] == '01' or nm[2] == '02':
+#             emotion = 4
+#         elif nm[2] == '08':
+#             emotion = 5
+#         elif nm[2] == '04':
+#             emotion = 6
+#         else:
+#             emotion = -1
+#         data_df.loc[count] = [path, age, emotion]
+#         count += 1
 
 
 #print(len(data_df))

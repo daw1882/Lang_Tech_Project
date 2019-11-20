@@ -39,7 +39,10 @@ def get_emotions(filename, model):
     df = pd.DataFrame(data['feature'].values.tolist())
     df = df.fillna(0)
 
-    test = np.zeros((1, 259))
+    if model == 'TESS_model':
+        test = np.zeros((1, 215))
+    else:
+        test = np.zeros((1, 259))
     test[:df.shape[0], :df.shape[1]] = np.array(df)
     test = np.expand_dims(test, axis=2)
 
