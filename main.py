@@ -23,7 +23,7 @@ class InputBox:
         global FILENAME
         if event.type == pygame.MOUSEBUTTONDOWN:
             # If the user clicked on the input_box rect.
-            if self.rect.collidepoint(event.pos):
+            if self.rect.collidepoint(event.pos[0], event.pos[1]):
                 # Toggle the active variable.
                 self.active = True
             else:
