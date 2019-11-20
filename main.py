@@ -8,6 +8,7 @@ COLOR_INACTIVE = pygame.Color('black')
 COLOR_ACTIVE = pygame.Color('black')
 FONT = pygame.font.SysFont('comicsansms', 32)
 FILENAME = ''
+MODEL = ''
 
 
 class InputBox:
@@ -63,6 +64,44 @@ def text_format(message, textFont, textSize, textColor):
     newFont = pygame.font.SysFont(textFont, textSize)
     newText = newFont.render(message, True, textColor)
     return newText
+
+
+def model_menu(window):
+    global MODEL
+    getting_model = True
+    text = text_format("Press '1' for RAVDESS model,", 'comicsansms', 40, (0, 0, 0))
+    text_rect = text.get_rect()
+    text_rect.center = (display_width//2, display_height // 2 - 100)
+    text2 = text_format("Press '2' for TESS model,", 'comicsansms', 40, (0, 0, 0))
+    text_rect2 = text.get_rect()
+    text_rect2.center = (display_width//2, display_height // 2 - 50)
+    text3 = text_format("Press '3' for the combined model", 'comicsansms', 40, (0, 0, 0))
+    text_rect3 = text.get_rect()
+    text_rect3.center = (display_width//2, display_height // 2)
+
+    while getting_model:
+        window.fill((255, 255, 255))
+        window.blit(text, text_rect)
+        window.blit(text2, text_rect2)
+        window.blit(text3, text_rect3)
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                getting_model = False
+                break
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_1:
+                    MODEL = 'RAVDESS_model'
+                    getting_model = False
+                    start_menu(window)
+                if event.key == pygame.K_2:
+                    MODEL = 'TESS_model'
+                    getting_model = False
+                    start_menu(window)
+                if event.key == pygame.K_3:
+                    MODEL = 'combined_model'
+                    getting_model = False
+                    start_menu(window)
+        pygame.display.update()
 
 
 def start_menu(window):
@@ -172,7 +211,7 @@ if __name__ == '__main__':
     running = True
     while running:
         window_display = pygame.display.set_mode((display_width, display_height))
-        start_menu(window_display)
-        sizes, top = get_emotions(FILENAME)
+        model_menu(window_display)
+        sizes, top = get_emotions(FILENAME, MODEL)
         FILENAME = ''
         running = plot_analysis(window_display)

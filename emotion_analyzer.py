@@ -6,16 +6,16 @@ from sklearn.preprocessing import LabelEncoder
 from keras.models import model_from_json
 
 
-def get_emotions(filename):
+def get_emotions(filename, model):
     labels = ['angry', 'disgust', 'fear', 'happy', 'neutral', 'surprise', 'sad']
     # loading json and creating model
-    json_file = open('model/combined.json', 'r')
+    json_file = open('model/' + model + '.json', 'r')
     loaded_model_json = json_file.read()
     json_file.close()
     loaded_model = model_from_json(loaded_model_json)
 
     # load weights into new model
-    loaded_model.load_weights("model/best_model.h5")
+    loaded_model.load_weights('model/' + model + '.h5')
     print("Loaded model from disk")
 
     print(filename)
@@ -34,12 +34,12 @@ def get_emotions(filename):
     sample_rate = np.array(sample_rate)
     mfccs = np.mean(librosa.feature.mfcc(y=X, sr=sample_rate, n_mfcc=13), axis=0)
     feature = mfccs
-    data.loc[0] = [feature[:215]]
+    data.loc[0] = [feature]
 
     df = pd.DataFrame(data['feature'].values.tolist())
     df = df.fillna(0)
 
-    test = np.zeros((1, 215))
+    test = np.zeros((1, 259))
     test[:df.shape[0], :df.shape[1]] = np.array(df)
     test = np.expand_dims(test, axis=2)
 
@@ -63,4 +63,6 @@ def get_emotions(filename):
     print()
     print('Detected:', predictions[0])
     return percentages, predictions[0]
+
+#get_emotions('training_set2/Actor_06/03-01-04-01-01-01-06.wav')
 
