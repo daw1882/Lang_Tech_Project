@@ -9,7 +9,7 @@ from keras.models import model_from_json
 def get_emotions(filename):
     labels = ['angry', 'disgust', 'fear', 'happy', 'neutral', 'surprise', 'sad']
     # loading json and creating model
-    json_file = open('model/model.json', 'r')
+    json_file = open('model/combined.json', 'r')
     loaded_model_json = json_file.read()
     json_file.close()
     loaded_model = model_from_json(loaded_model_json)

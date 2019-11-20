@@ -53,32 +53,61 @@ dir_list = os.listdir("training_set/")
 dir_list.sort()
 print(dir_list)
 
+dir_list2 = os.listdir("training_set2/")
+dir_list2.sort()
+print(dir_list2)
+
 data_df = pd.DataFrame(columns=['path', 'age', 'emotion'])
 count = 0
-for i in dir_list:
-    file_list = os.listdir('training_set/' + i)
+# for i in dir_list:
+#     file_list = os.listdir('training_set/' + i)
+#     for f in file_list:
+#         nm = f.split('.')[0].split('_')
+#         path = 'training_set/' + i + '/' + f
+#         age = i.split('_')[0]
+#         if nm[2] == 'angry':
+#             emotion = 0
+#         elif nm[2] == 'disgust':
+#             emotion = 1
+#         elif nm[2] == 'fear':
+#             emotion = 2
+#         elif nm[2] == 'happy':
+#             emotion = 3
+#         elif nm[2] == 'neutral':
+#             emotion = 4
+#         elif nm[2] == 'ps':
+#             emotion = 5
+#         elif nm[2] == 'sad':
+#             emotion = 6
+#         else:
+#             emotion = -1
+#         data_df.loc[count] = [path, age, emotion]
+#         count += 1
+for i in dir_list2:
+    file_list = os.listdir('training_set2/' + i)
     for f in file_list:
-        nm = f.split('.')[0].split('_')
-        path = 'training_set/' + i + '/' + f
-        age = i.split('_')[0]
-        if nm[2] == 'angry':
+        nm = f.split('.')[0].split('-')
+        path = 'training_set2/' + i + '/' + f
+        age = 'unknown'
+        if nm[2] == '05':
             emotion = 0
-        elif nm[2] == 'disgust':
+        elif nm[2] == '07':
             emotion = 1
-        elif nm[2] == 'fear':
+        elif nm[2] == '06':
             emotion = 2
-        elif nm[2] == 'happy':
+        elif nm[2] == '03':
             emotion = 3
-        elif nm[2] == 'neutral':
+        elif nm[2] == '01' or nm[2] == '02':
             emotion = 4
-        elif nm[2] == 'ps':
+        elif nm[2] == '08':
             emotion = 5
-        elif nm[2] == 'sad':
+        elif nm[2] == '04':
             emotion = 6
         else:
             emotion = -1
         data_df.loc[count] = [path, age, emotion]
         count += 1
+
 
 #print(len(data_df))
 #print(data_df.emotion[1000])
@@ -87,7 +116,7 @@ filename = data_df.path[1021]
 #print(filename)
 
 samples, sample_rate = librosa.load(filename)
-print(len(samples), sample_rate)
+#print(len(samples), sample_rate)
 
 
 def log_specgram(audio, sample_rate, window_size=20, step_size=10, eps=1e-10):
@@ -211,11 +240,11 @@ for i in tqdm(range(len(data_df))):
     feature = mfccs
     data.loc[i] = [feature]
 
-# print(data.head())
+#print(data.head())
 
 df = pd.DataFrame(data['feature'].values.tolist())
 labels = data_df.label
-# print(df.head())
+#print(df.head())
 
 newdf = pd.concat([df, labels], axis=1)
 rnewdf = newdf.rename(index=str, columns={"0": "label"})
@@ -308,7 +337,7 @@ def speedNpitch(data1):
 # plt.show()
 
 X = rnewdf.drop(['label'], axis=1)
-print(X.head())
+#print(X.head())
 #X = X.drop(['path'], axis=1)
 #X = X.drop(['age'], axis=1)
 y = rnewdf.label
@@ -330,10 +359,10 @@ y_train = np_utils.to_categorical(lb.fit_transform(y_train))
 y_test = np_utils.to_categorical(lb.fit_transform(y_test))
 
 # print()
-#print('Y-train', y_train.shape)
+#print('Y-train', y_train)
 # print('==============================================')
 # print()
-#print('X-train', X_train.shape)
+#print('X-train', X_train)
 # print()
 # print(y_test)
 #print('y-test', y_test.shape)
@@ -377,75 +406,75 @@ def get_lr_metric(optimizer):
     return lr
 
 
-# # New model
-# model = Sequential()
-# model.add(Conv1D(256, 8, padding='same',input_shape=(X_train.shape[1], 1), data_format='channels_first'))
-# model.add(Activation('relu'))
-# model.add(Conv1D(256, 8, padding='same'))
-# model.add(BatchNormalization())
-# model.add(Activation('relu'))
-# model.add(Dropout(0.25))
-# model.add(MaxPooling1D(pool_size=(8)))
-# model.add(Conv1D(128, 8, padding='same'))
-# model.add(Activation('relu'))
-# model.add(Conv1D(128, 8, padding='same'))
-# model.add(Activation('relu'))
-# model.add(Conv1D(128, 8, padding='same'))
-# model.add(Activation('relu'))
-# model.add(Conv1D(128, 8, padding='same'))
-# model.add(BatchNormalization())
-# model.add(Activation('relu'))
-# model.add(Dropout(0.25))
-# model.add(MaxPooling1D(pool_size=(8)))
-# model.add(Conv1D(64, 8, padding='same'))
-# model.add(Activation('relu'))
-# model.add(Conv1D(64, 8, padding='same'))
-# model.add(Activation('relu'))
-# model.add(Flatten())
-# # Edit according to target class no.
-# model.add(Dense(7))
-# model.add(Activation('softmax'))
+# New model
+model = Sequential()
+model.add(Conv1D(256, 8, padding='same',input_shape=(X_train.shape[1], 1), data_format='channels_first'))
+model.add(Activation('relu'))
+model.add(Conv1D(256, 8, padding='same'))
+model.add(BatchNormalization())
+model.add(Activation('relu'))
+model.add(Dropout(0.25))
+model.add(MaxPooling1D(pool_size=(8)))
+model.add(Conv1D(128, 8, padding='same'))
+model.add(Activation('relu'))
+model.add(Conv1D(128, 8, padding='same'))
+model.add(Activation('relu'))
+model.add(Conv1D(128, 8, padding='same'))
+model.add(Activation('relu'))
+model.add(Conv1D(128, 8, padding='same'))
+model.add(BatchNormalization())
+model.add(Activation('relu'))
+model.add(Dropout(0.25))
+model.add(MaxPooling1D(pool_size=(8)))
+model.add(Conv1D(64, 8, padding='same'))
+model.add(Activation('relu'))
+model.add(Conv1D(64, 8, padding='same'))
+model.add(Activation('relu'))
+model.add(Flatten())
+# Edit according to target class no.
+model.add(Dense(7))
+model.add(Activation('softmax'))
 opt = keras.optimizers.SGD(lr=0.0001, momentum=0.0, decay=0.0, nesterov=False)
-#
-# # Plotting Model Summary
-# model.summary()
-#
-# # Compile your model
-# model.compile(loss='categorical_crossentropy', optimizer=opt, metrics=['accuracy', fscore])
-#
-# # Model Training
-# lr_reduce = ReduceLROnPlateau(monitor='val_loss', factor=0.9, patience=20, min_lr=0.000001)
-# # Please change the model name accordingly.
-# mcp_save = ModelCheckpoint('model/best_model.h5', save_best_only=True, monitor='val_loss', mode='min')
-# cnnhistory = model.fit(x_traincnn, y_train, batch_size=16, epochs=700,
-#                        validation_data=(x_testcnn, y_test),
-#                        callbacks=[mcp_save, lr_reduce])
-#
-#
-# # Plotting the Train Valid Loss Graph
-# plt.plot(cnnhistory.history['loss'])
-# plt.plot(cnnhistory.history['val_loss'])
-# plt.title('model loss')
-# plt.ylabel('loss')
-# plt.xlabel('epoch')
-# plt.legend(['train', 'test'], loc='upper left')
-# plt.show()
-#
-# # Saving the model.json
-# model_json = model.to_json()
-# with open("model.json", "w") as json_file:
-#     json_file.write(model_json)
+
+# Plotting Model Summary
+model.summary()
+
+# Compile your model
+model.compile(loss='categorical_crossentropy', optimizer=opt, metrics=['accuracy', fscore])
+
+# Model Training
+lr_reduce = ReduceLROnPlateau(monitor='val_loss', factor=0.9, patience=20, min_lr=0.000001)
+# Please change the model name accordingly.
+mcp_save = ModelCheckpoint('model/RAVDESS_model.h5', save_best_only=True, monitor='val_loss', mode='min')
+cnnhistory = model.fit(x_traincnn, y_train, batch_size=16, epochs=700,
+                       validation_data=(x_testcnn, y_test),
+                       callbacks=[mcp_save, lr_reduce])
+
+
+# Plotting the Train Valid Loss Graph
+plt.plot(cnnhistory.history['loss'])
+plt.plot(cnnhistory.history['val_loss'])
+plt.title('model loss')
+plt.ylabel('loss')
+plt.xlabel('epoch')
+plt.legend(['train', 'test'], loc='upper left')
+plt.show()
+
+# Saving the combined.json
+model_json = model.to_json()
+with open("model/RAVDESS_model.json", "w") as json_file:
+    json_file.write(model_json)
 
 # loading json and creating model
 from keras.models import model_from_json
 
-json_file = open('model/model.json', 'r')
+json_file = open('model/RAVDESS_model.json', 'r')
 loaded_model_json = json_file.read()
 json_file.close()
 loaded_model = model_from_json(loaded_model_json)
 
 # load weights into new model
-loaded_model.load_weights("model/best_model.h5")
+loaded_model.load_weights("model/RAVDESS_model.h5")
 print("Loaded model from disk")
 
 # evaluate loaded model on test data
