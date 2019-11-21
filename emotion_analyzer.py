@@ -39,7 +39,7 @@ def get_emotions(filename, model):
     df = pd.DataFrame(data['feature'].values.tolist())
     df = df.fillna(0)
 
-    if model == 'TESS_model':
+    if model == 'TESS_model' or model == 'RAVDESS_model':
         test = np.zeros((1, 215))
     else:
         test = np.zeros((1, 259))
