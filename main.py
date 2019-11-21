@@ -7,7 +7,7 @@ pygame.init()
 COLOR_INACTIVE = pygame.Color('black')
 COLOR_ACTIVE = pygame.Color('black')
 FONT = pygame.font.SysFont('comicsansms', 32)
-FILENAME = ''
+FILENAME = 'test_sound_clips/'
 MODEL = ''
 
 
@@ -35,7 +35,7 @@ class InputBox:
             if self.active:
                 if event.key == pygame.K_RETURN:
                     print(self.text)
-                    FILENAME = self.text
+                    FILENAME = FILENAME + self.text
                     self.text = ''
                 elif event.key == pygame.K_BACKSPACE:
                     self.text = self.text[:-1]
@@ -156,7 +156,7 @@ def get_input_file(window):
         window.fill((255, 255, 255))
         window.blit(text, text_rect)
         input_box1.draw(window)
-        if FILENAME != '':
+        if FILENAME != 'test_sound_clips/':
             done = True
 
         pygame.display.flip()
@@ -213,5 +213,5 @@ if __name__ == '__main__':
         window_display = pygame.display.set_mode((display_width, display_height))
         model_menu(window_display)
         sizes, top = get_emotions(FILENAME, MODEL)
-        FILENAME = ''
+        FILENAME = 'test_sound_clips/'
         running = plot_analysis(window_display)

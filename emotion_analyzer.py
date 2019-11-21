@@ -34,7 +34,10 @@ def get_emotions(filename, model):
     sample_rate = np.array(sample_rate)
     mfccs = np.mean(librosa.feature.mfcc(y=X, sr=sample_rate, n_mfcc=13), axis=0)
     feature = mfccs
-    data.loc[0] = [feature]
+    if model == 'TESS_model' or model == 'RAVDESS_model':
+        data.loc[0] = [feature[:215]]
+    else:
+        data.loc[0] = [feature]
 
     df = pd.DataFrame(data['feature'].values.tolist())
     df = df.fillna(0)
