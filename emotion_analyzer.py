@@ -69,6 +69,3 @@ def get_emotions(filename, model):
     print()
     print('Detected:', predictions[0])
     return percentages, predictions[0]
-
-#get_emotions('training_set2/Actor_06/03-01-04-01-01-01-06.wav')
-
