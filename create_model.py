@@ -35,30 +35,30 @@ data_df = pd.DataFrame(columns=['path', 'age', 'emotion'])
 count = 0
 
 # Gets the TESS training set
-for i in dir_list:
-    file_list = os.listdir('training_set/' + i)
-    for f in file_list:
-        nm = f.split('.')[0].split('_')
-        path = 'training_set/' + i + '/' + f
-        age = i.split('_')[0]
-        if nm[2] == 'angry':
-            emotion = 0
-        elif nm[2] == 'disgust':
-            emotion = 1
-        elif nm[2] == 'fear':
-            emotion = 2
-        elif nm[2] == 'happy':
-            emotion = 3
-        elif nm[2] == 'neutral':
-            emotion = 4
-        elif nm[2] == 'ps':
-            emotion = 5
-        elif nm[2] == 'sad':
-            emotion = 6
-        else:
-            emotion = -1
-        data_df.loc[count] = [path, age, emotion]
-        count += 1
+# for i in dir_list:
+#     file_list = os.listdir('training_set/' + i)
+#     for f in file_list:
+#         nm = f.split('.')[0].split('_')
+#         path = 'training_set/' + i + '/' + f
+#         age = i.split('_')[0]
+#         if nm[2] == 'angry':
+#             emotion = 0
+#         elif nm[2] == 'disgust':
+#             emotion = 1
+#         elif nm[2] == 'fear':
+#             emotion = 2
+#         elif nm[2] == 'happy':
+#             emotion = 3
+#         elif nm[2] == 'neutral':
+#             emotion = 4
+#         elif nm[2] == 'ps':
+#             emotion = 5
+#         elif nm[2] == 'sad':
+#             emotion = 6
+#         else:
+#             emotion = -1
+#         data_df.loc[count] = [path, age, emotion]
+#         count += 1
 
 # Gets the RAVDESS training set
 for i in dir_list2:
